@@ -25,6 +25,7 @@ cp .env.example .env        # chỉnh mật khẩu DB và SECRET_KEY
 docker compose up --build
 ```
 
+- **Giao diện web: http://localhost:8080** (React + nginx, gọi API qua `/api`)
 - API: http://localhost:8000 · Tài liệu tương tác (Swagger): http://localhost:8000/docs
 - PostgreSQL: `localhost:5433` (đổi bằng `DB_PORT`)
 - Lần chạy đầu tự tạo bảng (Alembic) và dữ liệu mẫu (`SEED_ON_START=true`).
@@ -55,6 +56,9 @@ Không cần key vẫn chạy (bộ nhận xét theo luật, `provider = "rules"
 
 ```
 docker-compose.yml
+frontend/             # React 19 + Vite + Tailwind, gọi FastAPI (src/api.js)
+  Dockerfile  nginx.conf
+  src/pages/          # Login, Dashboard, Classes, ClassDetail, Attendance, Grades, Tuition, Users, Coach
 backend/
   Dockerfile  requirements.txt  alembic.ini
   alembic/            # migration
@@ -65,7 +69,24 @@ backend/
   tests/
 ```
 
+## Giao diện
+
+Giao diện được viết mới, gọn, chỉ phục vụ 5 module trên. Màn hình theo vai trò:
+
+| Vai trò | Màn hình |
+|---|---|
+| admin | Tổng quan, Lớp học (tạo lớp, ghi danh), Người dùng, Học phí, AI Coach |
+| teacher | Lớp của mình: Học viên / Điểm danh / Điểm số / Báo cáo (xuất Excel), AI Coach |
+| student | Tổng quan, Chuyên cần, Điểm số, Học phí, AI Coach |
+| parent | Như học viên, chọn từng con |
+
+Chạy riêng giao diện để phát triển (cần API ở cổng 8000):
+
+```bash
+cd frontend && npm install && npm run dev   # http://localhost:5173
+```
+
 ## Hướng dẫn tiếp theo
 
-- Nối giao diện React: đổi lớp dữ liệu từ Firebase SDK sang gọi các endpoint ở trên (`Authorization: Bearer <token>`).
 - Mở rộng module: chat, thông báo, game, Bonus nếu đề bài yêu cầu.
+- Bổ sung test giao diện (Vitest/Playwright) và CI chạy `pytest` + `npm run build`.
