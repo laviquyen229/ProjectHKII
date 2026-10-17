@@ -5,6 +5,11 @@ Database + Cloud Functions) bằng **FastAPI**, **PostgreSQL** và **Docker**. P
 
 > Toàn bộ dữ liệu trong repo là **dữ liệu giả**. Không có khóa, credential hay dữ liệu thật của hệ thống cũ.
 
+## Tài liệu
+
+- [Hướng dẫn chạy dự án, kịch bản demo và câu hỏi bảo vệ](docs/HUONG-DAN-CHAY.md)
+- Bài thuyết trình: `docs/HKII-ThuyetTrinh.pptx` (17 slide, có ghi chú lời nói ở từng slide)
+
 ## 5 module
 
 | # | Module | Endpoint chính |
