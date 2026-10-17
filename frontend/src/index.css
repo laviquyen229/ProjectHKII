@@ -2,34 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-slate-50 text-slate-800 antialiased;
-  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-slate-50 text-slate-800 antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  table {
+    @apply min-w-[36rem];
+  }
+  thead {
+    @apply bg-slate-50;
+  }
+  tbody tr {
+    @apply transition-colors hover:bg-indigo-50/40;
+  }
+  :focus-visible {
+    @apply outline-none ring-4 ring-indigo-200;
+  }
 }
 
 @layer components {
   .input {
-    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100;
+    @apply w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
-    @apply btn bg-indigo-600 text-white hover:bg-indigo-700;
+    @apply btn bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 active:bg-indigo-800;
   }
   .btn-ghost {
-    @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-100;
+    @apply btn border border-slate-300 bg-white text-slate-700 shadow-sm hover:bg-slate-50 active:bg-slate-100;
   }
   .btn-danger {
-    @apply btn bg-rose-600 text-white hover:bg-rose-700;
+    @apply btn bg-rose-600 text-white shadow-sm hover:bg-rose-700;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
   }
   .card {
-    @apply rounded-xl border border-slate-200 bg-white p-5 shadow-card;
+    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm;
   }
   .th {
-    @apply px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-500;
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500;
   }
   .td {
-    @apply px-3 py-2 text-sm;
+    @apply px-4 py-3 text-sm;
+  }
+  .skeleton {
+    @apply animate-pulse rounded-xl bg-slate-200/80;
   }
 }

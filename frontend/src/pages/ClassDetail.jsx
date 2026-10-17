@@ -13,8 +13,24 @@ import {
   percent,
   useAsync,
 } from '../components/ui'
+import { EmptyRow } from '../components/ui'
+import { Avatar } from '../components/ui'
 
 const today = () => new Date().toISOString().slice(0, 10)
+
+const CHIP_ON = {
+  green: 'border-emerald-500 bg-emerald-500 text-white',
+  amber: 'border-amber-500 bg-amber-500 text-white',
+  red: 'border-rose-500 bg-rose-500 text-white',
+  blue: 'border-sky-500 bg-sky-500 text-white',
+}
+
+const NameCell = ({ name }) => (
+  <div className="flex items-center gap-3">
+    <Avatar name={name} size="sm" />
+    <span className="whitespace-nowrap font-medium text-slate-900">{name}</span>
+  </div>
+)
 
 // ---------- Tab: học viên ----------
 function StudentsTab({ classId, students, reload }) {
@@ -81,7 +97,7 @@ function StudentsTab({ classId, students, reload }) {
           <tbody className="divide-y divide-slate-100">
             {students.map((s) => (
               <tr key={s.id}>
-                <td className="td font-medium">{s.full_name}</td>
+                <td className="td"><NameCell name={s.full_name} /></td>
                 <td className="td text-slate-500">{s.username}</td>
                 <td className="td text-right">
                   {user.role === 'admin' && (
@@ -93,11 +109,7 @@ function StudentsTab({ classId, students, reload }) {
               </tr>
             ))}
             {students.length === 0 && (
-              <tr>
-                <td className="td text-slate-500" colSpan={3}>
-                  Lớp chưa có học viên.
-                </td>
-              </tr>
+              <EmptyRow cols={3}>Lớp chưa có học viên.</EmptyRow>
             )}
           </tbody>
         </table>
@@ -165,6 +177,15 @@ function AttendanceTab({ classId, students }) {
         <Field label="Ngày học">
           <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
         </Field>
+        <button
+          className="btn-ghost"
+          type="button"
+          onClick={() =>
+            setRows(Object.fromEntries(students.map((st) => [st.id, { status: 'present', note: rows[st.id]?.note || '' }])))
+          }
+        >
+          Tất cả có mặt
+        </button>
         <button className="btn-primary" onClick={save} disabled={busy}>
           {busy ? 'Đang lưu…' : 'Lưu điểm danh'}
         </button>
@@ -183,19 +204,27 @@ function AttendanceTab({ classId, students }) {
           <tbody className="divide-y divide-slate-100">
             {students.map((s) => (
               <tr key={s.id}>
-                <td className="td font-medium">{s.full_name}</td>
+                <td className="td"><NameCell name={s.full_name} /></td>
                 <td className="td">
-                  <select
-                    className="input !w-auto"
-                    value={rows[s.id]?.status || 'present'}
-                    onChange={(e) => update(s.id, { status: e.target.value })}
-                  >
-                    {Object.entries(ATTENDANCE).map(([value, { label }]) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label={`Trạng thái của ${s.full_name}`}>
+                    {Object.entries(ATTENDANCE).map(([value, { label, tone }]) => {
+                      const on = (rows[s.id]?.status || 'present') === value
+                      return (
+                        <button
+                          key={value}
+                          type="button"
+                          role="radio"
+                          aria-checked={on}
+                          onClick={() => update(s.id, { status: value })}
+                          className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+                            on ? CHIP_ON[tone] : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:bg-slate-50'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      )
+                    })}
+                  </div>
                 </td>
                 <td className="td">
                   <input
@@ -292,7 +321,7 @@ function ScoresTab({ classId, students }) {
             <tbody className="divide-y divide-slate-100">
               {(scores.data || []).map((s) => (
                 <tr key={s.id}>
-                  <td className="td font-medium">{name(s.student_id)}</td>
+                  <td className="td"><NameCell name={name(s.student_id)} /></td>
                   <td className="td">{s.kind}</td>
                   <td className="td">
                     {s.value} / {s.max_value}
@@ -305,11 +334,7 @@ function ScoresTab({ classId, students }) {
                 </tr>
               ))}
               {(scores.data || []).length === 0 && (
-                <tr>
-                  <td className="td text-slate-500" colSpan={4}>
-                    Chưa có điểm nào.
-                  </td>
-                </tr>
+                <EmptyRow cols={4}>Chưa có điểm nào.</EmptyRow>
               )}
             </tbody>
           </table>
@@ -368,7 +393,7 @@ function ReportTab({ classId, code }) {
           <tbody className="divide-y divide-slate-100">
             {r.students.map((s) => (
               <tr key={s.student_id}>
-                <td className="td font-medium">{s.full_name}</td>
+                <td className="td"><NameCell name={s.full_name} /></td>
                 <td className="td">{s.sessions}</td>
                 <td className="td">{s.present}</td>
                 <td className="td">{s.late}</td>
@@ -409,14 +434,16 @@ export default function ClassDetail() {
 
   return (
     <>
-      <PageTitle title={`${classroom.code} · ${classroom.name}`} />
-      <div className="mb-5 flex gap-1 border-b border-slate-200">
+      <PageTitle title={classroom.name} subtitle={`${classroom.code} · ${classroom.schedule || 'Chưa có lịch học'}`} />
+      <div className="mb-6 inline-flex max-w-full gap-1 overflow-x-auto rounded-xl bg-slate-200/60 p-1" role="tablist">
         {TABS.map(([key, label]) => (
           <button
             key={key}
+            role="tab"
+            aria-selected={tab === key}
             onClick={() => setTab(key)}
-            className={`-mb-px border-b-2 px-4 py-2 text-sm font-semibold ${
-              tab === key ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-slate-500 hover:text-slate-800'
+            className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold transition ${
+              tab === key ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             {label}

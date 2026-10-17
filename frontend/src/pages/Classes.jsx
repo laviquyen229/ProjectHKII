@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { useAuth } from '../auth'
 import { ErrorBox, Field, Loading, PageTitle, useAsync } from '../components/ui'
+import { EmptyRow } from '../components/ui'
 
 function CreateClass({ teachers, onCreated }) {
   const [form, setForm] = useState({ code: '', name: '', schedule: '', teacher_id: '' })
@@ -76,7 +77,7 @@ export default function Classes() {
 
   return (
     <>
-      <PageTitle title="Lớp học" />
+      <PageTitle title="Lớp học" subtitle="Danh sách lớp, giáo viên phụ trách và lịch học." />
       {isAdmin && <CreateClass teachers={data.teachers} onCreated={reload} />}
       <div className="card overflow-x-auto !p-0">
         <table className="w-full">
@@ -92,8 +93,8 @@ export default function Classes() {
           <tbody className="divide-y divide-slate-100">
             {data.classes.map((c) => (
               <tr key={c.id}>
-                <td className="td font-semibold text-indigo-700">{c.code}</td>
-                <td className="td">{c.name}</td>
+                <td className="td"><span className="rounded-lg bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700">{c.code}</span></td>
+                <td className="td font-medium text-slate-900">{c.name}</td>
                 <td className="td text-slate-500">{c.schedule || '—'}</td>
                 {isAdmin && <td className="td">{teacherName(c.teacher_id)}</td>}
                 <td className="td text-right">
@@ -104,11 +105,7 @@ export default function Classes() {
               </tr>
             ))}
             {data.classes.length === 0 && (
-              <tr>
-                <td className="td text-slate-500" colSpan={5}>
-                  Chưa có lớp nào.
-                </td>
-              </tr>
+              <EmptyRow cols={5}>Chưa có lớp nào.</EmptyRow>
             )}
           </tbody>
         </table>

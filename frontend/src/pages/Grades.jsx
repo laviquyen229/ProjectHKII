@@ -23,14 +23,14 @@ export default function Grades() {
 
   return (
     <>
-      <PageTitle title="Điểm số">
+      <PageTitle title="Điểm số" subtitle="Từng đầu điểm và điểm trung bình theo lớp (thang 10).">
         <StudentPicker list={list} value={studentId} onChange={setPicked} />
       </PageTitle>
       <div className="mb-5 grid gap-3 sm:grid-cols-3">
         {summary.map((s) => (
           <div key={s.class_id} className="card">
             <div className="text-xs font-semibold text-indigo-600">{className(s.class_id)}</div>
-            <div className="text-2xl font-bold">{s.average_10.toFixed(2)}</div>
+            <div className="mt-1 text-3xl font-bold tracking-tight text-slate-900">{s.average_10.toFixed(2)}</div>
             <div className="text-xs text-slate-500">Điểm TB thang 10 · {s.count} đầu điểm</div>
           </div>
         ))}

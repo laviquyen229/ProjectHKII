@@ -14,6 +14,9 @@ import {
   money,
   useAsync,
 } from '../components/ui'
+import { EmptyRow } from '../components/ui'
+import { StatCard } from '../components/ui'
+import { CircleCheck, TriangleAlert, Wallet } from 'lucide-react'
 
 function Table({ rows, names, onPay }) {
   return (
@@ -32,7 +35,7 @@ function Table({ rows, names, onPay }) {
         <tbody className="divide-y divide-slate-100">
           {rows.map((t) => (
             <tr key={t.id}>
-              {names && <td className="td font-medium">{names(t.student_id)}</td>}
+              {names && <td className="td font-medium text-slate-900">{names(t.student_id)}</td>}
               <td className="td">{money(t.amount)}</td>
               <td className="td">{fmtDate(t.due_date)}</td>
               <td className="td">
@@ -51,11 +54,7 @@ function Table({ rows, names, onPay }) {
             </tr>
           ))}
           {rows.length === 0 && (
-            <tr>
-              <td className="td text-slate-500" colSpan={6}>
-                Không có khoản học phí nào.
-              </td>
-            </tr>
+            <EmptyRow cols={6}>Không có khoản học phí nào.</EmptyRow>
           )}
         </tbody>
       </table>
@@ -110,7 +109,7 @@ function AdminTuition() {
 
   return (
     <>
-      <PageTitle title="Học phí">
+      <PageTitle title="Học phí" subtitle="Các khoản học phí và trạng thái thanh toán.">
         <button
           className="btn-ghost"
           onClick={() =>
@@ -130,19 +129,10 @@ function AdminTuition() {
         </button>
       </PageTitle>
 
-      <div className="mb-5 grid gap-3 sm:grid-cols-3">
-        <div className="card">
-          <div className="text-xs font-semibold uppercase text-slate-500">Chưa đóng</div>
-          <div className="text-xl font-bold">{money(summary.unpaid)}</div>
-        </div>
-        <div className="card">
-          <div className="text-xs font-semibold uppercase text-slate-500">Quá hạn</div>
-          <div className="text-xl font-bold text-rose-600">{money(summary.overdue)}</div>
-        </div>
-        <div className="card">
-          <div className="text-xs font-semibold uppercase text-slate-500">Đã thu</div>
-          <div className="text-xl font-bold text-emerald-600">{money(summary.paid)}</div>
-        </div>
+      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <StatCard icon={Wallet} tone="amber" label="Chưa đóng" value={money(summary.unpaid)} hint={`${summary.count_by_status.unpaid} khoản`} />
+        <StatCard icon={TriangleAlert} tone="rose" label="Quá hạn" value={money(summary.overdue)} hint={`${summary.count_by_status.overdue} khoản`} />
+        <StatCard icon={CircleCheck} tone="emerald" label="Đã thu" value={money(summary.paid)} hint={`${summary.count_by_status.paid} khoản`} />
       </div>
 
       <form onSubmit={create} className="card mb-5 grid gap-3 sm:grid-cols-5">
@@ -197,7 +187,7 @@ function FamilyTuition() {
   if (error) return <ErrorBox message={error} />
   return (
     <>
-      <PageTitle title="Học phí">
+      <PageTitle title="Học phí" subtitle="Các khoản học phí và trạng thái thanh toán.">
         <StudentPicker list={list} value={studentId} onChange={setPicked} />
       </PageTitle>
       <Table rows={data} />

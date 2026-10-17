@@ -3,8 +3,10 @@ import { api } from '../api'
 import { useAuth } from '../auth'
 import { ROLE_LABEL } from '../auth'
 import { Badge, ErrorBox, Field, Loading, Notice, PageTitle, useAsync } from '../components/ui'
+import { Avatar } from '../components/ui'
 
 const EMPTY = { username: '', full_name: '', password: '', role: 'student' }
+const ROLE_TONE = { admin: 'indigo', teacher: 'blue', student: 'green', parent: 'amber' }
 
 export default function Users() {
   const { user: me } = useAuth()
@@ -44,7 +46,7 @@ export default function Users() {
 
   return (
     <>
-      <PageTitle title="Người dùng" />
+      <PageTitle title="Người dùng" subtitle="Tạo tài khoản, khóa hoặc mở khóa người dùng." />
       <form onSubmit={create} className="card mb-5 grid gap-3 sm:grid-cols-5">
         <Field label="Tên đăng nhập">
           <input className="input" value={form.username} onChange={set('username')} minLength={3} required />
@@ -100,9 +102,9 @@ export default function Users() {
             <tbody className="divide-y divide-slate-100">
               {data.map((u) => (
                 <tr key={u.id}>
-                  <td className="td font-medium">{u.full_name}</td>
+                  <td className="td"><div className="flex items-center gap-3"><Avatar name={u.full_name} size="sm" /><span className="font-medium text-slate-900">{u.full_name}</span></div></td>
                   <td className="td text-slate-500">{u.username}</td>
-                  <td className="td">{ROLE_LABEL[u.role]}</td>
+                  <td className="td"><Badge tone={ROLE_TONE[u.role]}>{ROLE_LABEL[u.role]}</Badge></td>
                   <td className="td">
                     <Badge tone={u.is_active ? 'green' : 'red'}>{u.is_active ? 'Hoạt động' : 'Đã khóa'}</Badge>
                   </td>

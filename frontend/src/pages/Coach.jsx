@@ -26,7 +26,7 @@ export default function Coach() {
 
   return (
     <>
-      <PageTitle title="AI Coach" />
+      <PageTitle title="AI Coach" subtitle="Nhận xét bài viết hoặc bài nói tiếng Anh của bạn." />
       <form onSubmit={submit} className="card space-y-3">
         <Field label="Loại bài">
           <select className="input !w-auto" value={kind} onChange={(e) => setKind(e.target.value)}>

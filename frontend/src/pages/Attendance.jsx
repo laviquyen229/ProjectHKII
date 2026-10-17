@@ -1,6 +1,7 @@
 import { api } from '../api'
 import StudentPicker, { useStudentChoice } from '../components/StudentPicker'
 import { ATTENDANCE, Badge, ErrorBox, Loading, PageTitle, fmtDate, percent, useAsync } from '../components/ui'
+import { EmptyRow } from '../components/ui'
 
 export default function Attendance() {
   const { list, studentId, setPicked, loading: pl } = useStudentChoice()
@@ -23,7 +24,7 @@ export default function Attendance() {
 
   return (
     <>
-      <PageTitle title="Chuyên cần">
+      <PageTitle title="Chuyên cần" subtitle="Lịch sử điểm danh theo từng buổi học.">
         <StudentPicker list={list} value={studentId} onChange={setPicked} />
       </PageTitle>
       <div className="mb-5 flex flex-wrap gap-3">
@@ -55,11 +56,7 @@ export default function Attendance() {
               </tr>
             ))}
             {rows.length === 0 && (
-              <tr>
-                <td className="td text-slate-500" colSpan={4}>
-                  Chưa có buổi học nào được ghi nhận.
-                </td>
-              </tr>
+              <EmptyRow cols={4}>Chưa có buổi học nào được ghi nhận.</EmptyRow>
             )}
           </tbody>
         </table>
