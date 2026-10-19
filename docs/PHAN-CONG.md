@@ -29,7 +29,7 @@ File dùng chung (`models.py`, `schemas.py`, `seed.py`, `components/ui.jsx`): ai
 ### Thành viên A
 - [ ] Màn **đổi mật khẩu** trên giao diện (API `POST /auth/change-password` đã có)
 - [ ] Màn **liên kết phụ huynh với học viên** cho admin (API `POST /users/{id}/children` đã có)
-- [ ] Màn **sửa và xóa điểm** (API `PATCH` và `DELETE /scores/{id}` đã có)
+- [ ] Chức năng **sửa điểm** trên giao diện (API `PATCH /scores/{id}` đã có; nút xóa điểm đã có sẵn)
 - [ ] Thêm test cho ghi danh vào lớp và quản lý người dùng
 - [ ] Vẽ lại sơ đồ ER và ma trận phân quyền bằng lời của nhóm (không chép nguyên từ slide)
 
@@ -48,6 +48,8 @@ File dùng chung (`models.py`, `schemas.py`, `seed.py`, `components/ui.jsx`): ai
 - [ ] Kiểm tra quy định của trường về việc **khai báo công cụ AI**, ghi vào báo cáo nếu cần
 
 ## 4. Cách làm việc với Git
+
+> **Issues:** mỗi ô trong mục 3 có một Issue tương ứng. Tạo bằng `python scripts/create_issues.py` (chạy thử trước: `--dry-run`). Cần đăng nhập `gh` bằng tài khoản **chủ repo** có quyền ghi.
 
 - Mỗi người một nhánh: `feature/<tên-module>`. **Không commit thẳng vào `main`.**
 - Gộp bằng pull request, **người kia duyệt** trước khi gộp. Commit nhỏ, nội dung rõ.
