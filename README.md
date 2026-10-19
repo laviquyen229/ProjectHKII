@@ -9,6 +9,7 @@ Database + Cloud Functions) bằng **FastAPI**, **PostgreSQL** và **Docker**. P
 
 - [Hướng dẫn chạy dự án, kịch bản demo và câu hỏi bảo vệ](docs/HUONG-DAN-CHAY.md)
 - Bài thuyết trình: `docs/HKII-ThuyetTrinh.pptx` (17 slide, có ghi chú lời nói ở từng slide)
+- [Phân công công việc nhóm](docs/PHAN-CONG.md)
 
 ## 5 module
 
