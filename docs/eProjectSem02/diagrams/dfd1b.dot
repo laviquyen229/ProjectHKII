@@ -1,0 +1,9 @@
+digraph G { rankdir=LR; graph[fontname="Times-Roman",dpi=200,nodesep=0.45,ranksep=1.0]; node[fontname="Times-Roman",fontsize=11]; edge[fontname="Times-Roman",fontsize=9];
+node[shape=box]; Admin; Teacher; SP[label="Student / Parent"];
+node[shape=circle,width=1.3,fixedsize=true]; p4[label="4.0\nManage\nClasses"]; p5[label="5.0\nRecord\nAttendance"]; p6[label="6.0\nRecord\nScores"]; p7[label="7.0\nGenerate\nReports"];
+node[shape=record,fixedsize=false]; d3[label="{D3 | classes}"]; d4[label="{D4 | enrollments}"]; d5[label="{D5 | attendance}"]; d6[label="{D6 | scores}"];
+Admin->p4[label="class info, teacher,\nenrolment"]; p4->d3; p4->d4; d3->p4; p4->Teacher[label="own classes, roster"];
+Teacher->p5[label="daily sheet"]; d4->p5[label="roster"]; p5->d5[label="upsert"]; d5->p5; p5->SP[label="attendance, rate"];
+Teacher->p6[label="kind, value, max"]; p6->d6; d6->p6; p6->SP[label="grades, average"];
+d4->p7; d5->p7; d6->p7; p7->Teacher[label="class summary, .xlsx"];
+}

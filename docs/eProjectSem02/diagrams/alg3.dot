@@ -1,0 +1,9 @@
+digraph G { graph[dpi=200,fontname="Times-Roman",nodesep=0.4,ranksep=0.35]; node[fontname="Times-Roman",fontsize=11]; edge[fontname="Times-Roman",fontsize=10];
+st[label="Start",shape=ellipse]; in[label="User submits kind (writing/speaking) + text",shape=parallelogram];
+r[label="Role is student,\nteacher or admin?",shape=diamond]; e403[label="Return 403",shape=box];
+cnt[label="Count today's coach_sessions of user",shape=box]; lim[label="used >= 20?",shape=diamond]; e429[label="Return 429\n'Daily limit reached'",shape=box];
+key[label="GEMINI_API_KEY set?",shape=diamond]; g[label="Call Gemini REST API\n(timeout 30s)",shape=box]; gok[label="Call succeeded?",shape=diamond];
+rule[label="Rule-based feedback:\nlength, sentence length,\nlexical variety, repeated words",shape=box];
+save[label="Save coach_session\n(input, feedback, provider)",shape=box]; out[label="Display feedback + history",shape=parallelogram]; en[label="End",shape=ellipse];
+st->in->r; r->e403[label="No"]; r->cnt[label="Yes"]; cnt->lim; lim->e429[label="Yes"]; lim->key[label="No"]; key->g[label="Yes"]; key->rule[label="No"]; g->gok; gok->save[label="Yes (gemini)"]; gok->rule[label="No"]; rule->save[label="provider = rules"]; save->out->en; e403->en; e429->en;
+}

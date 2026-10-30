@@ -1,0 +1,17 @@
+graph G { layout=neato; overlap=false; splines=true; graph[dpi=200,fontname="Times-Roman"]; node[fontname="Times-Roman",fontsize=12]; edge[fontname="Times-Roman",fontsize=11];
+node[shape=box,width=1.6,style=bold];
+users[pos="0,0!"]; classes[pos="6.5,0!"]; parent_students[pos="-3.5,3.5!"]; coach_sessions[pos="-4.5,-1.5!"]; tuition_records[pos="6.5,4.2!"];
+enrollments[pos="3.25,-3.2!"]; attendance[pos="0.5,-7!"]; scores[pos="6,-7!"];
+node[shape=diamond,style=solid,width=1.25,height=0.8];
+teaches[pos="3.25,0!"]; links[pos="-1.8,1.9!"]; uses[pos="-2.4,-0.8!"]; pays[pos="2.6,2.6!"]; billed[pos="6.5,2.1!",label="billed for"];
+joins[pos="1.4,-1.7!"]; has[pos="5.1,-1.7!",label="contains"];
+att1[pos="-0.3,-4.2!",label="attends"]; att2[pos="2.6,-5.4!",label="logs"];
+sc1[pos="7.3,-4.2!",label="has score"]; sc2[pos="4.2,-5.4!",label="receives"];
+users--teaches[label="1"]; teaches--classes[label="N"];
+users--links[label="1"]; links--parent_students[label="N"];
+users--uses[label="1"]; uses--coach_sessions[label="N"];
+users--pays[label="1"]; pays--tuition_records[label="N"]; classes--billed[label="0..1"]; billed--tuition_records[label="N"];
+users--joins[label="1"]; joins--enrollments[label="N"]; classes--has[label="1"]; has--enrollments[label="N"];
+users--att1[label="1"]; att1--attendance[label="N"]; classes--att2[label="1"]; att2--attendance[label="N"];
+classes--sc1[label="1"]; sc1--scores[label="N"]; users--sc2[label="1"]; sc2--scores[label="N"];
+}

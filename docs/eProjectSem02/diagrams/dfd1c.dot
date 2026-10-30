@@ -1,0 +1,8 @@
+digraph G { rankdir=LR; graph[fontname="Times-Roman",dpi=200,nodesep=0.45,ranksep=1.0]; node[fontname="Times-Roman",fontsize=11]; edge[fontname="Times-Roman",fontsize=9];
+node[shape=box]; Admin; SP[label="Student / Parent"]; ST[label="Student / Teacher /\nAdmin"]; Gemini[label="Gemini API"];
+node[shape=circle,width=1.3,fixedsize=true]; p8[label="8.0\nManage\nTuition"]; p9[label="9.0\nMark\nOverdue"]; p10[label="10.0\nAI Coach\nFeedback"];
+node[shape=record,fixedsize=false]; d7[label="{D7 | tuition_records}"]; d8[label="{D8 | coach_sessions}"];
+Admin->p8[label="amount, due date,\npayment"]; p8->d7[label="unpaid / paid"]; d7->p8; p8->Admin[label="summary, .xlsx"]; p8->SP[label="tuition status"];
+Admin->p9[label="run check"]; d7->p9[label="unpaid, due < today"]; p9->d7[label="status = overdue"];
+ST->p10[label="kind, text"]; d8->p10[label="today's usage"]; p10->Gemini[label="prompt"]; Gemini->p10[label="feedback"]; p10->d8[label="session"]; p10->ST[label="feedback / 429"];
+}
