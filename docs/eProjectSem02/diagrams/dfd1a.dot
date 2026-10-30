@@ -1,0 +1,9 @@
+digraph G { rankdir=LR; graph[fontname="Times-Roman",dpi=200,nodesep=0.45,ranksep=1.0]; node[fontname="Times-Roman",fontsize=11]; edge[fontname="Times-Roman",fontsize=9];
+node[shape=box]; Admin; Users_[label="Admin / Teacher /\nStudent / Parent"];
+node[shape=circle,width=1.3,fixedsize=true]; p1[label="1.0\nAuthenticate"]; p2[label="2.0\nAuthorise\nRequest"]; p3[label="3.0\nManage\nUsers"];
+node[shape=record,fixedsize=false]; d1[label="{D1 | users}"]; d2[label="{D2 | parent_students}"];
+Users_->p1[label="username, password"]; p1->d1[label="failed_attempts,\nlocked_until"]; d1->p1[label="password_hash,\nrole, is_active"]; Users_->p1[dir=back,label="JWT token / 401 / 423"];
+Users_->p2[label="Bearer token + request"]; d1->p2[label="role"]; d2->p2[label="children ids"]; Users_->p2[dir=back,label="allowed data / 403"];
+Admin->p3[label="new user, role,\nparent-child link"]; p3->d1[label="user record"]; p3->d2[label="link record"]; Admin->p3[dir=back,label="user list"];
+{rank=same; p1; p2; p3;} {rank=same; Admin; Users_;} {rank=same; d1; d2;}
+}

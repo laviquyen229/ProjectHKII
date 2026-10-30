@@ -1,0 +1,14 @@
+digraph G { rankdir=LR; graph[dpi=200,fontname="Times-Roman",nodesep=0.25,ranksep=0.6]; node[shape=box,fontname="Times-Roman",fontsize=11,style="rounded"]; edge[arrowhead=none];
+login[label="Login (/login)",style="rounded,bold"]; home[label="Dashboard (/)\nrole-based home",style="rounded,bold"]; login->home;
+A[label="ADMIN"]; T[label="TEACHER"]; S[label="STUDENT"]; P[label="PARENT"];
+home->A; home->T; home->S; home->P;
+a1[label="Overview"]; a2[label="Classes (/classes)\ncreate, enrol"]; a3[label="Class Detail\n(/classes/:id)"]; a4[label="Users (/users)"]; a5[label="Tuition (/tuition)"]; a6[label="AI Coach (/coach)"];
+A->a1; A->a2; a2->a3; A->a4; A->a5; A->a6;
+t1[label="My Classes\n(/classes)"]; t2[label="Class Detail (/classes/:id)"]; t3[label="Tab: Students"]; t4[label="Tab: Attendance"]; t5[label="Tab: Scores"]; t6[label="Tab: Report\n(Export Excel)"]; t7[label="AI Coach (/coach)"];
+T->t1; t1->t2; t2->t3; t2->t4; t2->t5; t2->t6; T->t7;
+s1[label="Overview"]; s2[label="Attendance\n(/attendance)"]; s3[label="Grades (/grades)"]; s4[label="Tuition (/tuition)"]; s5[label="AI Coach (/coach)"];
+S->s1; S->s2; S->s3; S->s4; S->s5;
+p0[label="Child Picker"]; p2[label="Attendance"]; p3[label="Grades"]; p4[label="Tuition"];
+P->p0; p0->p2; p0->p3; p0->p4;
+api[label="API docs (Swagger)\nlocalhost:8000/docs",style="dashed"]; home->api[style=dashed];
+}

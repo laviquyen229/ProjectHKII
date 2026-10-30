@@ -1,0 +1,12 @@
+digraph G { graph[dpi=200,fontname="Times-Roman",nodesep=0.4,ranksep=0.35]; node[fontname="Times-Roman",fontsize=11]; edge[fontname="Times-Roman",fontsize=10];
+st[label="Start",shape=ellipse]; in[label="Input username, password",shape=parallelogram];
+q[label="Find user by username",shape=box];
+lk[label="locked_until > now?",shape=diamond]; e423[label="Return 423\n'Account temporarily locked'",shape=box];
+ok[label="User exists, active and\nbcrypt password matches?",shape=diamond];
+inc[label="failed_attempts += 1",shape=box]; five[label="failed_attempts >= 5?",shape=diamond];
+lock[label="locked_until = now + 15 min\nfailed_attempts = 0",shape=box]; e401[label="Return 401\n'Wrong username or password'",shape=box];
+rst[label="failed_attempts = 0\nlocked_until = NULL",shape=box]; jwt[label="Create JWT (sub, role, exp 8h)",shape=box];
+out[label="Return token + user profile\nRedirect to role dashboard",shape=parallelogram]; en[label="End",shape=ellipse];
+st->in->q->lk; lk->e423[label="Yes"]; lk->ok[label="No"]; ok->rst[label="Yes"]; ok->inc[label="No"]; inc->five; five->lock[label="Yes"]; five->e401[label="No"]; lock->e401;
+rst->jwt->out->en; e423->en; e401->en;
+}

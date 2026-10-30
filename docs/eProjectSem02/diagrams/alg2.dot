@@ -1,0 +1,12 @@
+digraph G { graph[dpi=200,fontname="Times-Roman",nodesep=0.4,ranksep=0.35]; node[fontname="Times-Roman",fontsize=11]; edge[fontname="Times-Roman",fontsize=10];
+st[label="Start",shape=ellipse]; in[label="Teacher submits class_id, date,\nlist of (student_id, status, note)",shape=parallelogram];
+c1[label="Class exists?",shape=diamond]; e404[label="Return 404",shape=box];
+c2[label="Admin, or teacher\nof this class?",shape=diamond]; e403[label="Return 403",shape=box];
+c3[label="All students enrolled\nin the class?",shape=diamond]; e400[label="Return 400\nlist of unknown students",shape=box];
+loop[label="For each record",shape=box];
+c4[label="Record exists for\n(class, student, date)?",shape=diamond];
+upd[label="Update status, note,\nrecorded_by, recorded_at",shape=box]; ins[label="Insert new attendance row",shape=box];
+cm[label="Commit transaction",shape=box]; out[label="Return saved records",shape=parallelogram]; en[label="End",shape=ellipse];
+st->in->c1; c1->e404[label="No"]; c1->c2[label="Yes"]; c2->e403[label="No"]; c2->c3[label="Yes"]; c3->e400[label="No"]; c3->loop[label="Yes"];
+loop->c4; c4->upd[label="Yes"]; c4->ins[label="No"]; upd->cm; ins->cm; cm->out->en; e404->en; e403->en; e400->en;
+}
